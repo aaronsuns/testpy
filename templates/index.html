@@ -41,15 +41,22 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+        .form-container {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Submit Text</h1>
-    <input type="text" id="textInput" placeholder="Enter text">
-    <button onclick="submitText()">Submit</button>
-    <h1>Search Text</h1>
-    <input type="text" id="searchInput" placeholder="Enter search query">
-    <button onclick="searchText()">Search</button>
+    <div class="form-container">
+        <h1>Submit Text</h1>
+        <input type="text" id="textInput" placeholder="Enter text">
+        <button onclick="submitText()">Submit</button>
+    </div>
+    <div class="form-container">
+        <h1>Search Text</h1>
+        <input type="text" id="searchInput" placeholder="Enter search query">
+        <button onclick="searchText()">Search</button>
+    </div>
     <h2>Search Results</h2>
     <ul id="resultsList"></ul>
     <script>
@@ -80,6 +87,12 @@
                 });
             });
         }
+
+        document.getElementById('textInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                submitText();
+            }
+        });
 
         document.getElementById('searchInput').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
