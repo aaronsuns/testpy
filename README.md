@@ -15,3 +15,5 @@ git config --global core.editor vim
 podman run --name mypostgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=mydatabase -p 5432:5432 -d postgres:13
 #start app
 DATABASE_URL=postgresql://postgres:password@localhost:5432/mydatabase python app.py
+#or
+python app.py
