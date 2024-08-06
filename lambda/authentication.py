@@ -3,10 +3,24 @@ import boto3
 from jose import jwt
 
 def lambda_handler(event, context):
-    token = event['headers']['Authorization']
+    # Retrieve the JWT token from the Authorization header
+    token = event['headers'].get('Authorization')
+
+    # Ensure the token is in the expected format
+    if token is None or not token.startswith('Bearer '):
+        return {
+            'statusCode': 401,
+            'body': json.dumps('Unauthorized'),
+            'headers': {
+                'Content-Type': 'application/json'
+            }
+        }
+
+    token = token.split(' ')[1]  # Extract the token part
+
     try:
         # Validate the JWT token using Cognito public keys
-        # Assuming Cognito User Pool is used for authentication
+        # (Assuming you have the correct public keys and configurations)
         user_info = jwt.decode(token, verify=True)
 
         return {

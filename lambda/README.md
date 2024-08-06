@@ -520,3 +520,126 @@ User requests access to a resource via API Gateway.
 API Gateway validates the JWT token.
 Lambda function checks the user's role and permissions in DynamoDB.
 Based on the role and permissions, the Lambda function either grants or denies access.
+
+
+
+-----
+API gateway event example:
+{
+"resource": "/{proxy+}",
+"path": "/path/to/resource",
+"httpMethod": "GET",
+"headers": {
+"Accept": "application/json",
+"Authorization": "Bearer <JWT_TOKEN>"
+},
+"requestContext": {
+"accountId": "123456789012",
+"apiId": "api-id",
+"httpMethod": "GET",
+"requestId": "request-id",
+"resourceId": "resource-id",
+"stage": "prod"
+},
+"body": null,
+"isBase64Encoded": false
+}
+
+
+-----------
+lambda vs micro services:
+
+When to Choose AWS Lambda
+AWS Lambda is ideal for event-driven, short-duration tasks where you want to avoid managing servers and leverage automatic scaling. Here are some scenarios:
+
+Event-Driven Processing:
+
+Example: A Lambda function that processes S3 events when new files are uploaded. This could include resizing images, processing logs, or transforming data.
+Reason: Lambda can automatically trigger and scale to handle events without the need for server management.
+Microservices:
+
+Example: A small microservice that handles user authentication using AWS Cognito triggers.
+Reason: Lambda allows you to deploy microservices independently and scale them automatically.
+Scheduled Tasks:
+
+Example: A Lambda function that runs nightly to aggregate data or perform cleanup tasks.
+Reason: Lambda can be triggered on a schedule using CloudWatch Events, eliminating the need for a constantly running server.
+API Backend:
+
+Example: A backend function for a REST API endpoint that handles lightweight data processing or querying.
+Reason: Lambda can be easily integrated with API Gateway to handle incoming API requests, with automatic scaling based on request load.
+Real-Time Data Processing:
+
+Example: A Lambda function that processes streaming data from Kinesis or DynamoDB Streams.
+Reason: Lambda is well-suited for real-time processing of streaming data, scaling automatically to match the data throughput.
+Infrastructure Automation:
+
+Example: A Lambda function that automates infrastructure tasks, such as starting/stopping EC2 instances based on certain conditions.
+Reason: Lambda can be used to run automation scripts triggered by events or schedules without maintaining an always-on server.
+
+###
+When to Choose Application Server
+An application server is better suited for tasks that require long-running processes, complex computations, or fine-grained control over the environment. Here are some scenarios:
+
+Long-Running Applications:
+
+Example: A web application that requires a persistent connection to serve dynamic content.
+Reason: Application servers are designed to handle long-running applications and maintain stateful connections.
+Complex Compute-Intensive Tasks:
+
+Example: Machine learning model training or large-scale data processing.
+Reason: Application servers can be optimized for high CPU/GPU usage and memory-intensive tasks.
+Custom Runtime Environments:
+
+Example: Applications that require specific software installations, libraries, or custom configurations.
+Reason: Application servers provide full control over the operating system and installed software.
+Stateful Applications:
+
+Example: An online multiplayer game server that maintains game state and player sessions.
+Reason: Application servers can maintain state across multiple requests and connections.
+Consistent High Traffic:
+
+Example: An e-commerce website with consistently high traffic and complex interactions.
+Reason: Application servers can handle high and consistent traffic better by optimizing and scaling the infrastructure accordingly.
+Complex Multi-Step Transactions:
+
+Example: A financial application that processes complex transactions involving multiple steps and consistent state management.
+Reason: Application servers can manage multi-step transactions and maintain consistency and state throughout the process.
+Summary
+Task/Requirement	Choose AWS Lambda	Choose Application Server
+Event-driven processing	Yes	No
+Microservices	Yes	Sometimes
+Scheduled tasks	Yes	No
+API backend (lightweight)	Yes	Sometimes
+Real-time data processing	Yes	No
+Infrastructure automation	Yes	No
+Long-running applications	No	Yes
+Complex compute-intensive tasks	No	Yes
+Custom runtime environments	No	Yes
+Stateful applications	No	Yes
+Consistent high traffic	Sometimes	Yes
+Complex multi-step transactions	No	Yes
+By understanding the strengths and limitations of AWS Lambda and application servers, you can make informed decisions on which service to use based on the specific needs of your application and workloads.
+
+
+------
+Common Architectural Patterns
+Monolithic Architecture:
+
+Single application with tightly integrated components.
+Simpler to develop and deploy initially but can become difficult to scale and maintain.
+Microservices Architecture:
+
+Application broken into smaller, independent services.
+Easier to scale and manage but more complex in terms of deployment and communication.
+Event-Driven Architecture:
+
+Services communicate by producing and consuming events.
+Highly decoupled and scalable, suitable for applications with asynchronous processing needs.
+Serverless Architecture:
+
+Uses services like AWS Lambda to run code without provisioning or managing servers.
+Ideal for event-driven, stateless functions and provides automatic scaling.
+
+-------
+
