@@ -5,9 +5,6 @@ import jwt  # Ensure this is pyjwt, not jose
 def lambda_handler(event, context):
     token = event['headers']['Authorization']
     try:
-        # Replace 'your_cognito_public_key' with actual Cognito public key if needed
-        # For now, just decode the token without verifying for testing purposes
-        # In production, you'll want to verify it against the Cognito public keys
         user_info = jwt.decode(token, options={"verify_signature": False})
 
         return {
