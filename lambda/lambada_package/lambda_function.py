@@ -1,6 +1,5 @@
 import json
-import boto3
-import jwt  # Ensure this is pyjwt, not jose
+import jwt
 
 def lambda_handler(event, context):
     token = event['headers']['Authorization']
