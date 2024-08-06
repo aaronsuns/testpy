@@ -1,0 +1,15 @@
+{
+    "Records": [
+        {
+            "s3": {
+                "bucket": {
+                    "name": "aarontestbucket1"
+                },
+                "object": {
+                    "key": "example-image.jpg"
+                }
+            }
+        }
+    ]
+}
+

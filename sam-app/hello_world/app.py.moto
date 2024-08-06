@@ -1,0 +1,42 @@
+import json
+import boto3
+from moto import mock_s3
+from PIL import Image
+import io
+
+s3 = boto3.client('s3')
+
+@mock_s3
+def lambda_handler(event, context):
+    # Create a mock S3 bucket
+    s3.create_bucket(Bucket='source-bucket')
+    s3.create_bucket(Bucket='destination-bucket')
+
+    # Upload a test image to the mock S3 source bucket
+    test_image = Image.new('RGB', (200, 200), color = 'red')
+    buffer = io.BytesIO()
+    test_image.save(buffer, 'JPEG')
+    buffer.seek(0)
+    s3.put_object(Bucket='source-bucket', Key='example-image.jpg', Body=buffer.getvalue())
+
+    # Now proceed with the original logic
+    source_bucket = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
+
+    response = s3.get_object(Bucket=source_bucket, Key=key)
+    image_content = response['Body'].read()
+
+    image = Image.open(io.BytesIO(image_content))
+    image = image.resize((100, 100))
+
+    buffer = io.BytesIO()
+    image.save(buffer, 'JPEG')
+    buffer.seek(0)
+
+    destination_bucket = 'destination-bucket'
+    s3.put_object(Bucket=destination_bucket, Key=key, Body=buffer, ContentType='image/jpeg')
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Image processed and uploaded successfully')
+    }
