@@ -5,3 +5,6 @@ flask_sqlalchemy
 boto3
 pillow
 jose
+jwt
+datetime
+pyjwt
